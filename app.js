@@ -4,10 +4,12 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const geoip2 = require('geoip2');
-
+const sql = require('./config/db');
 const indexController = require('./controller/index');
 
 const app = express();
+sql.connect();
+
 geoip2.init('../GeoLite2-ASN_20181009/GeoLite2-ASN.mmdb');
 
 
