@@ -1,24 +1,27 @@
 import requests
 import unittest
+import re
 
 class TestStringMethods(unittest.TestCase):
     
-    def setUp(self):
-        self.r = requests.get("http://localhost:3000/api/summary")
-
     def test_weblog_summary_meta(self):
-        self.assertEqual(self.r.status_code, 200)
-        self.assertEqual(self.r.headers['Content-Type'], 'application/json; charset=utf-8')
-        self.assertEqual(self.r.encoding, 'utf-8')
+        r = requests.get("http://localhost:3000/api/summary")
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.headers['Content-Type'], 'application/json; charset=utf-8')
+        self.assertEqual(r.encoding, 'utf-8')
         
     def test_weblog_summary_json(self):
-        data = self.r.json()
-        self.assertEqual(data['startTime'], 1538372781)
-        self.assertEqual(data['endTime'], 1539756951)
-        self.assertEqual(data['rowNum'], 950273)
-        self.assertEqual(data['uniqueMac'], 145)
-        assert(data['startTime'] < data['endTime'])
+        r = requests.get("http://localhost:3000/api/summary")
+        data = r.json()
+        self.assertTrue(data['startTime'] < data['endTime'])
+        self.assertTrue(data['rowNum'] > 0)
+        self.assertTrue(data['uniqueMac'] > 0)
 
+    def test_weblog_mac(self):
+        r = requests.get("http://localhost:3000/api/mac?from='2018-10-01 16:00:00'&to='2018-10-012 16:00:00'")
+        data = r.json()
+        # print(data[0]['mac'])
+        self.assertRegexpMatches(data[0]['mac'], "[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$")
 
 
     # def test_isupper(self):
