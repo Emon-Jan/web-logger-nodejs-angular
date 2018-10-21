@@ -85,7 +85,9 @@ router.get('/ip', function(req, res, next) {
   req.query.from +") AND UNIX_TIMESTAMP(" + req.query.to + ")";
 
   sql.query(qryForIp, function (err, data) {
-    if (err) throw err;
+    if (err) throw res.status(400).send("Bad request");
+    console.log(data);
+    
     for (const key in data) {
       // ipAdd.push(geoip2.lookupSync(data[key].ip));
       a = geoip2.lookupSync(data[key].ip);
@@ -96,12 +98,13 @@ router.get('/ip', function(req, res, next) {
       }     
     }
     count = sum(f);
+    let per = []
     for (const key in f) {
       // console.log(key + ": " + (f[key]/count*100).toFixed(2) + "%");
-      f[key] = (f[key]/count*100).toFixed(2);
+      val = (f[key]/count*100).toFixed(2);
+      per.push({name: key, y:val})     
     }
-    // console.log(f);
-    res.send(f);
+    res.send(per);
   });
 
 });
