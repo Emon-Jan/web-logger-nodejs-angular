@@ -65,9 +65,14 @@ router.get('/mac', function(req, res, next) {
   req.query.from +") and UNIX_TIMESTAMP(" + req.query.to + ")";
 
   sql.query(qryForMac, function (err, data) {
-    if (err) res.status(404).send("Mac Address not found");
+    if (err) res.status(400).send("Bad request");
     // console.log(data[0].mac);
-    res.send(data);
+    if (data == 0) {
+      res.status(404).send("Mac Address not found");
+    }
+    else {
+      res.send(data);
+    }
   });
 
 });
@@ -93,7 +98,7 @@ router.get('/ip', function(req, res, next) {
     count = sum(f);
     for (const key in f) {
       // console.log(key + ": " + (f[key]/count*100).toFixed(2) + "%");
-      f[key] = (f[key]/count*100).toFixed(2) + "%";
+      f[key] = (f[key]/count*100).toFixed(2);
     }
     // console.log(f);
     res.send(f);
