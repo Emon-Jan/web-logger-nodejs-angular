@@ -41,6 +41,25 @@ router.get('/summary', function(req, res, next) {
     });
   });
 
+
+/* /mac# returns uniq list of mac addresses */
+router.get('/mac', function(req, res, next) {
+  
+  let qryForMac = "SELECT distinct mac FROM log";
+
+  sql.query(qryForMac, function (err, data) {
+    if (err) res.status(400).send("Bad request");
+    // console.log(data[0].mac);
+    if (data == 0) {
+      res.status(404).send("Mac Address not found");
+    }
+    else {
+      res.send(data);
+    }
+  });
+
+});
+
 /* /mac?from='2018-10-01 16:00:00'&to='2018-10-07 16:00:00' # returns uniq list of mac addresses with datetime limit */
 router.get('/mac', function(req, res, next) {
 
@@ -70,26 +89,34 @@ router.get('/ip', function(req, res, next) {
   req.query.from +") AND UNIX_TIMESTAMP(" + req.query.to + ")";
 
   sql.query(qryForIp, function (err, data) {
-    if (err) throw res.status(400).send("Bad request");
-    console.log(data);
-    
+    if (err) res.status(400).send("Bad request");
+    // console.log(data);
+    try {
     for (const key in data) {
-      // ipAdd.push(geoip2.lookupSync(data[key].ip));
-      a = geoip2.lookupSync(data[key].ip);
-      if (!f[a.autonomous_system_organization]) {
-        f[a.autonomous_system_organization] = 1;
-      } else {
-        f[a.autonomous_system_organization] += 1;
-      }     
+        a = geoip2.lookupSync(data[key].ip);
+        // console.log(a);
+        if (a != null) {
+          if (!f[a.autonomous_system_organization]) {
+            f[a.autonomous_system_organization] = 1;
+            // console.log(a.autonomous_system_organization);
+            // console.log("error1");
+          } else {
+            f[a.autonomous_system_organization] += 1;
+            // console.log(f[a.autonomous_system_organization]);
+          }
+        } 
+      }
+      count = sum(f);
+      let per = []
+      for (const key in f) {
+        val = parseFloat((f[key]/count*100).toFixed(2));
+        per.push({name: key, y:val})     
+      }
+      res.send(per);       
+    } catch (error) {
+      res.status(404).send(error.message);        
     }
-    count = sum(f);
-    let per = []
-    for (const key in f) {
-      // console.log(key + ": " + (f[key]/count*100).toFixed(2) + "%");
-      val = (f[key]/count*100).toFixed(2);
-      per.push({name: key, y:val})     
-    }
-    res.send(per);
+    
   });
 
 });
