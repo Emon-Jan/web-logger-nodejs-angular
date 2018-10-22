@@ -90,22 +90,18 @@ router.get('/ip', function(req, res, next) {
 
   sql.query(qryForIp, function (err, data) {
     if (err) res.status(400).send("Bad request");
-    // console.log(data);
     try {
-    for (const key in data) {
-        a = geoip2.lookupSync(data[key].ip);
-        // console.log(a);
-        if (a != null) {
-          if (!f[a.autonomous_system_organization]) {
-            f[a.autonomous_system_organization] = 1;
-            // console.log(a.autonomous_system_organization);
-            // console.log("error1");
-          } else {
-            f[a.autonomous_system_organization] += 1;
-            // console.log(f[a.autonomous_system_organization]);
-          }
-        } 
-      }
+      for (const key in data) {
+          a = geoip2.lookupSync(data[key].ip);
+          
+          if (a != null) {
+            if (!f[a.autonomous_system_organization]) {
+              f[a.autonomous_system_organization] = 1;
+            } else {
+              f[a.autonomous_system_organization] += 1;
+            }
+          } 
+        }
       count = sum(f);
       let per = []
       for (const key in f) {
