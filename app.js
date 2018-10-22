@@ -12,7 +12,11 @@ sql.connect();
 
 geoip2.init('../GeoLite2-ASN_20181009/GeoLite2-ASN.mmdb');
 
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());
