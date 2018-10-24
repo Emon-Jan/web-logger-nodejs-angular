@@ -25,8 +25,6 @@ router.get('/', function(req, res, next) {
       for (let key in result) {
         data.push(geoip2.lookupSync(result[key].ip));
       }
-
-      console.log(data);
       res.send(data);
     });
   });
@@ -36,41 +34,16 @@ router.get('/summary', function(req, res, next) {
     let qryForSummary = "SELECT MIN(timestamp) AS startTime, MAX(timestamp) AS endTime, COUNT(*) AS rowNum, COUNT(DISTINCT mac) AS uniqueMac From log";
     sql.query(qryForSummary, function (err, data) {
       if (err) throw err;
-      console.log(data[0]);
       res.send(data[0]);
     });
   });
 
-
-/* /mac# returns uniq list of mac addresses */
-// router.get('/mac', function(req, res, next) {
-  
-//   let qryForMac = "SELECT distinct mac FROM log";
-
-//   sql.query(qryForMac, function (err, data) {
-//     if (err) res.status(400).send("Bad request");
-//     // console.log(data[0].mac);
-//     if (data == 0) {
-//       res.status(404).send("Mac Address not found");
-//     }
-//     else {
-//       res.send(data);
-//     }
-//   });
-
-// });
-
 /* /mac?from='2018-10-01 16:00:00'&to='2018-10-07 16:00:00' # returns uniq list of mac addresses with datetime limit */
 router.get('/mac', function(req, res, next) {
-
-  console.log(req.query);
-  
   let qryForMac = "SELECT distinct mac FROM log WHERE timestamp BETWEEN " + req.query.from + " AND " + req.query.to + "";
-  console.log(qryForMac);
   
   sql.query(qryForMac, function (err, data) {
     if (err) res.status(400).send("Bad request");
-    // console.log(data[0].mac);
     if (data == 0) {
       res.status(404).send("Mac Address not found");
     }
@@ -84,12 +57,8 @@ router.get('/mac', function(req, res, next) {
 /* /ip?from=A&to=B&mac=M # retuns {mac: ip} with datetime limit */
 router.get('/ip', function (req, res, next) {
   let f = {};
-  let a, count;
-  console.log(req.query);
-  
+  let a, count;  
   let qryForIp = "SELECT ip, timestamp AS time From log WHERE mac=" + req.query.mac + " AND timestamp BETWEEN " + req.query.from + " AND " + req.query.to + "";
-
-  console.log(qryForIp);
   
   sql.query(qryForIp, function (err, data) {
     if (err) res.status(400).send("Bad request");
@@ -108,13 +77,10 @@ router.get('/ip', function (req, res, next) {
               f[a.autonomous_system_organization] = 1;
             } else {
               f[a.autonomous_system_organization] += 1;
-            }
-            // console.log(a);           
-            // console.log(f[a]);           
-            // console.log(f);           
+            }        
         }
       }
-      // console.log(a);      
+           
       console.log(f);
       count = sum(f);
       let per = []
