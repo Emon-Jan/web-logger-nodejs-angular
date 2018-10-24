@@ -1,6 +1,7 @@
 import requests
 import unittest
 import re
+from datetime import date
 
 class TestStringMethods(unittest.TestCase):
     
@@ -13,7 +14,10 @@ class TestStringMethods(unittest.TestCase):
     def test_weblog_summary_json(self):
         r = requests.get("http://localhost:3000/api/summary")
         data = r.json()
+        st = date.fromtimestamp(data['startTime']).strftime('%d-%m-%Y %H:%M')
+        et = date.fromtimestamp(data['endTime']).strftime('%d-%m-%Y %H:%M')
         self.assertTrue(data['startTime'] < data['endTime'])
+        self.assertTrue(st < et)
         self.assertTrue(data['rowNum'] > 0)
         self.assertTrue(data['uniqueMac'] > 0)
 
