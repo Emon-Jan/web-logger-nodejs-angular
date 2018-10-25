@@ -14,7 +14,6 @@ function sum( obj ) {
   return sum;
 }
 
-
 /* GET all data from db. */
 router.get('/', function(req, res, next) {
     let data=[];
@@ -40,7 +39,7 @@ router.get('/summary', function(req, res, next) {
 
 /* /mac?from='2018-10-01 16:00:00'&to='2018-10-07 16:00:00' # returns uniq list of mac addresses with datetime limit */
 router.get('/mac', function(req, res, next) {
-  let qryForMac = "SELECT distinct mac FROM log WHERE timestamp BETWEEN " + req.query.from + " AND " + req.query.to + "";
+  let qryForMac = "SELECT distinct mac, COUNT(*) AS num FROM log WHERE timestamp BETWEEN " + req.query.from + " AND " + req.query.to + " GROUP BY mac";
   
   sql.query(qryForMac, function (err, data) {
     if (err) res.status(400).send("Bad request");
@@ -59,12 +58,13 @@ router.get('/ip', function (req, res, next) {
   let f = {};
   let a, count;  
   let qryForIp = "SELECT ip, timestamp AS time From log WHERE mac=" + req.query.mac + " AND timestamp BETWEEN " + req.query.from + " AND " + req.query.to + "";
+  console.log(qryForIp);
   
   sql.query(qryForIp, function (err, data) {
     if (err) res.status(400).send("Bad request");
     try {
       for (const key in data) {
-        a = geoip2.lookupSync(data[key].ip);        
+        a = geoip2.lookupSync(data[key].ip);
         if (a != null) {
           if (!f[a.autonomous_system_organization]) {
             f[a.autonomous_system_organization] = 1;
@@ -77,21 +77,25 @@ router.get('/ip', function (req, res, next) {
               f[a.autonomous_system_organization] = 1;
             } else {
               f[a.autonomous_system_organization] += 1;
-            }        
+            }
         }
       }
-           
-      console.log(f);
-      count = sum(f);
+    } catch (error) {
+        console.log(error.message);      
+        a = { autonomous_system_organization: 'local or n/a'};
+        if (!f[a.autonomous_system_organization]) {
+          f[a.autonomous_system_organization] = 1;
+        } else {
+          f[a.autonomous_system_organization] += 1;
+        }
+    }
+    count = sum(f);
       let per = []
       for (const key in f) {
         val = parseFloat((f[key] / count * 100).toFixed(2));
         per.push({ name: key, y: val, startTime: data[0].time, endTime: data[data.length-1].time})
       }
       res.send(per);
-    } catch (error) {
-      res.status(404).send(error.message);
-    }
   });
 });
 
