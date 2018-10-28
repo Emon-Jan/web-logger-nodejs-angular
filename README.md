@@ -4,7 +4,7 @@
 
 # Installation and Setup Guide:
 Node: v8.12.0 (LTS) or greater and npm v6.4.1 or greater.
-Angular: 7. check if these are install on machine by running
+Angular: 7. check if these are installed on machine by running
 
 * `node -v`
 * `npm -v`
@@ -70,7 +70,7 @@ Angular: 7. check if these are install on machine by running
     * API: http://hostname:3000/api/ip?from='1538363117'&to='1538399117'&mac='00:00:00:00:00:00'
     * Query parameter: from , to
     * Details:
-        * returns a list of organization name with a value within the given date-time or only date with 'yyyy-MM-dd' or 'yyyy-mm-dd hh:mm:ss' format in json.
+        * returns a list of organization name with a value within the given date-time in json.
             * e.g. ```[ 
                         { name: 'Google LLC', y: 37.16, startTime: 1538363117, endTime: 1538399117 }, 
                         { ... }
