@@ -1,0 +1,16 @@
+[Unit]
+Description=Weblog Node Server
+After=network.target
+StartLimitIntervalSec=1
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=1
+User=root
+ExecStart=/usr/bin/npm start
+ExecStop=echo
+WorkingDirectory=/root/weblog/weblog-backend
+
+[Install]
+WantedBy=multi-user.target
