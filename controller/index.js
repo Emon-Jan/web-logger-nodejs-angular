@@ -14,20 +14,6 @@ function sum( obj ) {
   return sum;
 }
 
-/* GET all data from db. */
-router.get('/', function(req, res, next) {
-    let data=[];
-    let qry = "SELECT * FROM log LIMIT 20";
-
-    sql.query(qry, function (err, result) {
-      if (err) throw err;
-      for (let key in result) {
-        data.push(geoip2.lookupSync(result[key].ip));
-      }
-      res.send(data);
-    });
-  });
-
 /*summary # returns timestamp start, end, number of rows, number of ip, number of uniq mac*/
 router.get('/summary', function(req, res, next) {
     let qryForSummary = "SELECT MIN(timestamp) AS startTime, MAX(timestamp) AS endTime, COUNT(*) AS rowNum, COUNT(DISTINCT mac) AS uniqueMac From log";
@@ -54,7 +40,6 @@ router.get('/ip', function (req, res, next) {
   let f = {};
   let a, count;  
   let qryForIp = "SELECT ip, timestamp AS time From log WHERE mac=" + req.query.mac + " AND timestamp BETWEEN " + req.query.from + " AND " + req.query.to + "";
-  console.log(qryForIp);
   
   sql.query(qryForIp, function (err, data) {
     if (err) res.status(400).send("Bad request");
@@ -76,8 +61,7 @@ router.get('/ip', function (req, res, next) {
             }
         }
       }
-    } catch (error) {
-        console.log(error.message);      
+    } catch (error) {   
         a = { autonomous_system_organization: 'local or n/a'};
         if (!f[a.autonomous_system_organization]) {
           f[a.autonomous_system_organization] = 1;
