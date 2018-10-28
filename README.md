@@ -31,7 +31,11 @@ Angular: 7. check if these are install on machine by running
   1. Date-Time panel
   2. Status panel
 
-* From date-time panel:
+1. Status panel:
+    * Status panel displays overall status of the web log.
+        * e.g. Number of visits, Number of mac addresses, Start time and End time
+  
+2. Date-time panel:
     * After setting date-time from and to field >>> Get Mac >>>>> Machine address panel ===> Select any one Mac address >>> Chart Panel
     * OR, Today/Week/Last Hour >>>>> Mac address panel ===> Select any one Mac address >>> Chart Panel
 
