@@ -1,0 +1,149 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<nav class="navbar navbar-expand-md navbar-light bg-warning fixed-top justify-content-center">
+  <a class="navbar-brand" routerLink="/">
+    <i class="material-icons" style="vertical-align: middle;">assessment</i>
+    Web Logger v0.1
+  </a>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <i class="material-icons" style="vertical-align: middle;"> timeline </i>
+            Select Date and Time:
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="From" [(ngModel)]="dateTimeRangeZero"
+                  value="{{ dateTimeRangeZero | date:'short'}}">
+                <owl-date-time #dt1></owl-date-time>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" placeholder="To" [(ngModel)]="dateTimeRangeOne"
+                  value="{{ dateTimeRangeOne | date:'short'}}">
+                <owl-date-time #dt2></owl-date-time>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <button mat-raised-button class="btn btn-block" color="accent" type="button" (click)="getMacAddress()">
+                <i class="material-icons">
+                  keyboard_arrow_down
+                </i>
+                Get mac
+              </button>
+            </div>
+          </div>
+          <div class="space"></div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="time-btn">
+                <button mat-raised-button class="btn btn-block" color="warn" type="button" (click)="onToday()">
+                  <i class="material-icons">
+                    today
+                  </i>
+                  Today
+                </button>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="time-btn">
+                <button mat-raised-button class="btn btn-block" color="warn" type="button" (click)="onWeek()">
+                  <i class="material-icons">
+                    view_week
+                  </i>
+                  Week
+                </button>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="time-btn">
+                <button mat-raised-button class="btn btn-block" color="warn" type="button" (click)="onLastHour()">
+                  <i class="material-icons">
+                    schedule
+                  </i>
+                  Last Hour
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+        <div class="space"></div>
+      </mat-card>
+    </div>
+    <div class="col-md-6">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <i class="material-icons" style="vertical-align: middle;"> details </i>
+            Status
+          </mat-card-title>
+        </mat-card-header>
+        <div class="space-st"></div>
+        <mat-card-content *ngIf="stat">
+          <mat-chip-list>
+            <div class="row">
+              <div class="col-md-7">
+                <mat-chip color="accent" selected>Visit: {{ stat.rowNum }}</mat-chip>
+                <mat-chip color="accent" selected>Machine: {{ stat.uniqueMac }}</mat-chip>
+                <mat-chip color="primary" selected>Start: {{ startTime | date:'medium' }}</mat-chip>
+                <mat-chip color="primary" selected>End: {{ endTime | date:'medium' }}</mat-chip>
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+          </mat-chip-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <mat-card *ngIf="filteredMacs">
+        <mat-card-header>
+          <mat-card-title>
+            <i class="material-icons" style="vertical-align: middle;"> desktop_mac </i>
+            User Machine Address
+          </mat-card-title>
+        </mat-card-header>
+        <div>
+          <form class="example-form">
+            <mat-form-field class="example-full-width">
+              <input matInput #q (keyup)="filter(q.value)" placeholder="Search...">
+            </mat-form-field>
+          </form>
+        </div>
+        <mat-card-content>
+          <div class="mac-btn">
+            <button mat-raised-button class="btn btn-block" color="accent" type="submit" *ngFor="let m of filteredMacs; let i = index"
+              (click)="showPlot(m, i)">{{ m.mac | uppercase }} ({{ m.num }})</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-8">
+      <mat-card class="example-card" *ngIf="filteredMacs">
+        <mat-card-header>
+          <mat-card-title>
+            <i class="material-icons" style="vertical-align: middle;"> pie_chart </i>
+            Web log
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div id="container"></div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

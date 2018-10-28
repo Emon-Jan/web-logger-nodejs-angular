@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "./assets/css/theming.scss";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+
+html, body { height: 100%; }
+body {
+  padding-top: 60px;
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+  font-family: "Roboto", Courier, monospace !important;
+}
+
+.cdk-overlay-pane.owl-dt-popup {
+  position: absolute !important;
+  top: 60px !important;
+}

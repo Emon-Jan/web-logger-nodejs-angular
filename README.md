@@ -2,6 +2,27 @@
 
     This project is based on net usages data API.
 
+# Installation and Setup Guide:
+Node: v8.12.0 (LTS) or greater and npm v6.4.1 or greater.
+Angular: 7. check if these are install on machine by running
+* `node -v`
+* `npm -v`
+* `ng version`
+
+If these are not installed then run commands:
+* `sudo apt install curl`
+* `curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -`
+* `sudo apt install nodejs`
+* `npm install -g @angular/cli`
+
+If all version are as specified then 
+* First go to `~/weblog/weblog-backend/` and run `npm install`
+* After successful installation of packages run `npm start`
+* Then go to `~/weblog/weblog-frontent` and run `npm install`
+* After successful installation of packages run `ng serve --host hostname --port portnumber`.
+* Then go to http://hostname:portnumber
+
+
 # Web Logger v0.1 (Frontend) Workflow
 * After page loaded: There are two panel 
   1. Date-Time panel
