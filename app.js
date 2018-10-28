@@ -1,23 +1,17 @@
 const createError = require('http-errors');
 const express = require('express');
-// const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const geoip2 = require('geoip2');
 const sql = require('./config/db');
 const indexController = require('./controller/index');
 
-
 const app = express();
+
+// Connect to Mysql server
 sql.connect();
-
+// Initilization of geoip 
 geoip2.init('../GeoLite2-ASN_20181009/GeoLite2-ASN.mmdb');
-
-/*
-// Error case of lookup not returning null, throws error: 
-// Error parsing address aplombtech-smartrouter.ralinktech.com: Name or service not known
-geoip2.lookup('aplombtech-smartrouter.ralinktech.com', res => console.log(res)); 
-*/
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
