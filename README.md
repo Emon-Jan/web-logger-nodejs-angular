@@ -21,7 +21,7 @@ Angular: 7. check if these are installed on machine by running
 
 * First go to `~/Weblog/` and run `npm install`
 * After successful installation of packages run `npm start`
-* Then go to `~/Weblog/frontent` and run `npm install`
+* Then go to `~/Weblog/frontend/` and run `npm install`
 * After successful installation of packages run `ng serve --host hostname --port portnumber`.
 * Then go to http://hostname:portnumber
 
