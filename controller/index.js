@@ -37,18 +37,14 @@ router.get('/summary', function(req, res, next) {
     });
   });
 
-/* /mac?from='2018-10-01 16:00:00'&to='2018-10-07 16:00:00' # returns uniq list of mac addresses with datetime limit */
+/* /mac?from=A&to=B # returns uniq list of mac addresses with datetime limit */
 router.get('/mac', function(req, res, next) {
   let qryForMac = "SELECT distinct mac, COUNT(*) AS num FROM log WHERE timestamp BETWEEN " + req.query.from + " AND " + req.query.to + " GROUP BY mac";
   
   sql.query(qryForMac, function (err, data) {
     if (err) res.status(400).send("Bad request");
-    if (data == 0) {
-      res.status(404).send("Mac Address not found");
-    }
-    else {
-      res.send(data);
-    }
+
+    res.send(data);
   });
 
 });
