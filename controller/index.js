@@ -25,7 +25,7 @@ router.get('/summary', function(req, res, next) {
 
 /* /mac?from=A&to=B # returns uniq list of mac addresses with datetime limit */
 router.get('/mac', function(req, res, next) {
-  let qryForMac = "SELECT distinct mac, COUNT(*) AS num FROM log WHERE timestamp BETWEEN " + req.query.from + " AND " + req.query.to + " GROUP BY mac";
+  let qryForMac = "SELECT distinct mac, COUNT(*) AS num FROM log WHERE timestamp BETWEEN " + req.query.from + " AND " + req.query.to + " GROUP BY mac ORDER BY COUNT(*) DESC";
   
   sql.query(qryForMac, function (err, data) {
     if (err) res.status(400).send("Bad request");
