@@ -18,7 +18,8 @@ import {
   MatChipsModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule
+  MatSortModule,
+  MatTooltipModule
 } from '@angular/material';
 
 
@@ -44,7 +45,7 @@ import {
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-
+    MatTooltipModule
   ],
   providers: [WebService],
   bootstrap: [AppComponent]
