@@ -81,6 +81,5 @@ router.get('/ip', function (req, res, next) {
 
 module.exports = router;
 
-// "SELECT ip, timestamp AS time From log WHERE mac="" AND timestamp BETWEEN '1538363117' AND '1538399117'"
 // 1538363117
 // 1538399117
