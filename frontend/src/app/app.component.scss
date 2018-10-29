@@ -19,18 +19,18 @@ div#container {
     margin-bottom: 150px;
   }
 
-div.mac-btn button{
+td.mac-btn button{
     font-size: 18px;
 }
 
-div.mac-btn button:hover{
+td.mac-btn button:hover{
     font-size: 20px;
-    background-color: rgb(247, 233, 112);
+    background-color: rgb(209, 209, 209);
 }
 
-div.mac-btn button:focus{
+td.mac-btn button:focus{
     font-size: 24px;
-    background-color: rgb(167, 207, 241);
+    background-color: rgb(209, 209, 209);
 }
 
 div.time-btn button:hover{
@@ -54,7 +54,8 @@ div.space {
 }
 
 div.space-st {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 mat-card-content.example-input-wrapper div label.col-form-label input {
@@ -64,3 +65,24 @@ mat-card-content.example-input-wrapper div label.col-form-label input {
 mat-card.example-card{
     margin-bottom: 20px;
 }
+
+table {
+    width: 100%;
+  }
+  
+td, th {
+    width: 100%;
+  }
+
+mat-card-content th.mat-header-cell {
+    text-align: center;
+}
+
+td mat-chip{
+    margin-left: 10px;
+  }
+
+.example-container {
+    height: 450px;
+    overflow: auto;
+  }

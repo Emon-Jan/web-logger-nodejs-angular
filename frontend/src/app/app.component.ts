@@ -1,9 +1,16 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatSnackBar } from '@angular/material';
 
 import * as Highcharts from "highcharts";
 import { WebService } from "./web.service";
 import { Stat } from "./stat.interface";
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+
+
+export interface Mac {
+  mac: string;
+  num: number;
+}
 
 @Component({
   selector: "app-root",
@@ -19,6 +26,12 @@ export class AppComponent implements OnInit {
   endTime: any;             // Used for formating Summary.endTime 
   dateTimeRangeZero: any = 0;    // Used for receiving datetime range from UI
   dateTimeRangeOne: any = 0;    // Used for receiving datetime range from UI
+
+  displayedColumns: string[] = ['mac', 'num'];
+  dataSource: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private webService: WebService, public snackBar: MatSnackBar) { }
 
@@ -46,8 +59,9 @@ export class AppComponent implements OnInit {
       this.filteredMacs = [];
       this.webService.getMacAddressesWithTime(this.dateTimeRangeZero, this.dateTimeRangeOne)
         .subscribe(
-          res => {
+          (res: Mac[]) => {
             this.macAdd = this.filteredMacs = res;
+            this.initializeTable(this.filteredMacs);
             if (this.filteredMacs == 0) {
               const mes = "Data is not available at this time"
               this.snackBar.open(mes, "", {
@@ -61,7 +75,7 @@ export class AppComponent implements OnInit {
   }
 
   // Get org name and percent time in a preset date-time range
-  showPlot(m, i) {
+  showPlot(m) {
     if (this.dateTimeRangeZero === 0 && this.dateTimeRangeOne === 0) {
       this.webService.getWebUsages(m.mac)
         .subscribe(
@@ -111,6 +125,7 @@ export class AppComponent implements OnInit {
           .includes(query.toLowerCase())
       )
       : this.macAdd;
+    this.initializeTable(this.filteredMacs);
   }
 
   // Get mac addresses of manually setting date-time range  
@@ -198,5 +213,13 @@ export class AppComponent implements OnInit {
       }]
     });
   }
+
+  // Options for Initialize table
+  private initializeTable(mac: Mac[]) {
+    this.dataSource = new MatTableDataSource(mac);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
 
 }

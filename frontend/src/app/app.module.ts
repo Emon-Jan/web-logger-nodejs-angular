@@ -9,14 +9,17 @@ import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {
-          MatCardModule, 
-          MatButtonModule, 
-          MatExpansionModule, 
-          MatDividerModule, 
-          MatSnackBarModule,
-          MatInputModule,
-          MatChipsModule
-        } from '@angular/material';
+  MatCardModule,
+  MatButtonModule,
+  MatExpansionModule,
+  MatDividerModule,
+  MatSnackBarModule,
+  MatInputModule,
+  MatChipsModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule
+} from '@angular/material';
 
 
 @NgModule({
@@ -35,9 +38,13 @@ import {
     MatDividerModule,
     MatSnackBarModule,
     MatInputModule,
-    MatChipsModule, 
-    OwlDateTimeModule, 
+    MatChipsModule,
+    OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+
   ],
   providers: [WebService],
   bootstrap: [AppComponent]
